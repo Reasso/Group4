@@ -1,0 +1,87 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+
+namespace Test
+{
+    public partial class Login : Form
+    {
+        public Login()
+        {
+            InitializeComponent();
+        }
+
+        private void login_btn_Click(object sender, EventArgs e)
+        {
+            if (userID_txt.Text == "1" & password_txt.Text == "1234")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else if (userID_txt.Text == "2" & password_txt.Text == "1235")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else if (userID_txt.Text == "3" & password_txt.Text == "1236")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else if (userID_txt.Text == "4" & password_txt.Text == "1237")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else if (userID_txt.Text == "5" & password_txt.Text == "1238")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else if (userID_txt.Text == "6" & password_txt.Text == "1239")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else if (userID_txt.Text == "7" & password_txt.Text == "1240")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else if (userID_txt.Text == "8" & password_txt.Text == "1241")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else if (userID_txt.Text == "9" & password_txt.Text == "1242")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else if (userID_txt.Text == "10" & password_txt.Text == "1243")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else if (userID_txt.Text == "11" & password_txt.Text == "1245")
+            {
+                new Home().Show();
+                this.Close();
+            }
+            else
+            {
+                string message = "Wrong Username or Password.";
+                MessageBox.Show(message);
+            }
+        }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
