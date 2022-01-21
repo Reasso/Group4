@@ -1,0 +1,143 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Data.SQLite;
+
+namespace Test
+{
+    public partial class Home : Form
+    {
+        SQLiteConnection myConn = new SQLiteConnection();
+        string conString;
+
+        public Home()
+        {
+            InitializeComponent();
+
+            toolStripStatusLabel1.Image = Properties.Resources.red_circle;
+            toolStripStatusLabel1.Text = "~~no database~~";
+        }
+
+
+
+        private void Closebtn_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to exit?", "Exit", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                Application.Exit(); //exit the application
+            }
+        }
+
+        private void connectToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Connect();
+        }
+
+        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Disconnect();
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //disabling the disconnect tool
+            disconnectToolStripMenuItem.Enabled = false;
+
+            //this code is for connecting to the database and it will remember the pathing you have chosen to go to the database and use that pathing to connect
+            openFileDialog1.Title = "Select SQLite databse file";
+            openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            openFileDialog1.Filter = "Databse files (*.db)|*.db";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.FileName = "";
+
+            //shows in the status label that there is a connection to the database
+            if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                conString = @"Data Source = " + openFileDialog1.FileName;
+
+                toolStripStatusLabel1.Text = "Db set to: " + openFileDialog1.FileName;
+                toolStripStatusLabel1.Image = Properties.Resources.green_button;
+            }
+            //if there is no connection show that there isnt one 
+            else
+            {
+                toolStripStatusLabel1.Image = Properties.Resources.red_circle;
+                toolStripStatusLabel1.Text = "~~no database~~";
+            }
+        }
+
+
+
+    
+
+        private void Connect()
+        {
+            //the pathing for the database
+            string Details = @"Data Source = C:\College\Uni\Project Management\Database\Hotel.db";
+            myConn.ConnectionString = @"Data source= " + Details;
+
+            try
+            {
+                //if the pathing is incorrect then it will say there is no database
+                if (!System.IO.File.Exists(Details))
+                {
+                    MessageBox.Show("connecrtion to db does not exist: " + Details, "error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                //if the path is correct then show the database being open
+                myConn.Open();
+                MessageBox.Show("Connection to database is open!" + Details);
+            }
+            //if there is an error then this will show it
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Disconnect()
+        {
+            //closing the connection to the database
+            myConn.Close();
+            MessageBox.Show("Connection to Database is Closed!");
+
+            toolStripStatusLabel1.Image = Properties.Resources.red_circle;
+            toolStripStatusLabel1.Text = "Database has been closed";
+        }
+
+        private void deleteBookingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Ammendments f = new Ammendments();  //navigate to delete form
+            f.ShowDialog();
+  
+        
+        }
+
+
+
+        private void bookingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Booking f = new Booking();  //navigate to booking form
+            f.ShowDialog();
+         
+        }
+
+        private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Reports f = new Reports();  //navigate to booking form
+            f.ShowDialog();
+        
+        }
+    }
+    
+}
