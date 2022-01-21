@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using System.Data.SQLite;
+
+namespace Test
+{
+    public partial class BookingInfo : Form
+    {
+        public BookingInfo()
+        {
+            InitializeComponent();
+        }
+
+        SQLiteConnection myConn = new SQLiteConnection();
+        string conString;
+        SQLiteConnection conn;
+
+        private void BookingInfo_Load(object sender, EventArgs e)
+        {
+            // format dataGridView1
+            dataGridView1.BackgroundColor = this.BackColor;
+            dataGridView1.BorderStyle = BorderStyle.None;
+            dataGridView1.DefaultCellStyle.Font = new Font("Trebuchet MS", 10);
+            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Trebuchet MS", 20);
+            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.LightBlue;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.DefaultCellStyle.SelectionBackColor = dataGridView1.DefaultCellStyle.BackColor;
+            dataGridView1.DefaultCellStyle.SelectionForeColor = dataGridView1.DefaultCellStyle.ForeColor;
+
+            try
+            {
+                SQLiteConnection myConn = new SQLiteConnection();
+                myConn.ConnectionString = Globals.dbName;
+                SQLiteDataAdapter da_Bookings;
+                DataTable dt_Bookings = new DataTable();
+                conn = new SQLiteConnection(conString);
+
+                //this code is selecting the information from the database
+
+
+                da_Bookings = new SQLiteDataAdapter("Select BookingNo, CustomerID, StaffID, RoomNo, NoOfPeople From Bookings", myConn);
+                da_Bookings.Fill(dt_Bookings);
+                dataGridView1.DataSource = dt_Bookings;
+
+
+
+            }
+            catch (Exception ex) //shows an error if there is one
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}
