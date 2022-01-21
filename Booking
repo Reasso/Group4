@@ -1,0 +1,117 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using System.Data.SQLite;
+
+namespace Test
+{
+    public partial class Booking : Form
+    {
+        public Booking()
+        {
+            InitializeComponent();
+        }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+            SQLiteDataAdapter daSub;    
+            DataTable dtSub = new DataTable();               //Opening database Connection  + Some variables
+            SQLiteConnection myConn = new SQLiteConnection();
+            myConn.ConnectionString = Globals.dbName;
+
+
+
+        }
+
+        //Adding customer details to customer
+        private void btnCus_Click(object sender, EventArgs e)
+        {
+            SQLiteConnection myConn = new SQLiteConnection();   //Opening database Connection 
+            myConn.ConnectionString = Globals.dbName;
+            int newRecordCount = 0;
+            int check;
+
+            using (SQLiteCommand dbCmd = myConn.CreateCommand())
+            {
+                myConn.Open();
+                dbCmd.CommandText = @"insert into Customer (FirstName, LastName, Address) values(@FirstName,@LastName,@Address)";  //Selecting what value we want to be inserted
+                dbCmd.Parameters.AddWithValue("FirstName", txtFirstName.Text);
+                dbCmd.Parameters.AddWithValue("LastName", txtLastName.Text);     //Showing where to grab the data from
+                dbCmd.Parameters.AddWithValue("Address", txtAddress.Text);       
+                check = dbCmd.ExecuteNonQuery();
+                MessageBox.Show("New Customer added.");    //Message to let you know that the data has been added
+                myConn.Close();
+            }
+
+        }
+
+
+        //Adding Date to bookings
+        private void btnDate_Click(object sender, EventArgs e)
+        {
+            SQLiteConnection myConn = new SQLiteConnection();   //Opening database Connection 
+            myConn.ConnectionString = Globals.dbName;
+            int newRecordCount = 0;
+            int check;
+
+            using (SQLiteCommand dbCmd = myConn.CreateCommand())
+            {
+                myConn.Open();
+                dbCmd.CommandText = @"insert into Bookings (Date) values(@Date)";    //Inserting into the Booking table 
+                dbCmd.Parameters.AddWithValue("Date", dateTimePicker1.Text);
+                check = dbCmd.ExecuteNonQuery();
+                MessageBox.Show("Date Added.");  //Message to show that it has been added
+                myConn.Close();
+            }
+        }
+
+        //Adding RoomNo + Guest to bookings
+        private void btnRoom_Click(object sender, EventArgs e)
+        {
+            SQLiteConnection myConn = new SQLiteConnection();   //Opening database Connection 
+            myConn.ConnectionString = Globals.dbName;
+            int newRecordCount = 0;
+            int check;
+
+            using (SQLiteCommand dbCmd = myConn.CreateCommand())
+            {
+                myConn.Open();
+                dbCmd.CommandText = @"insert into Bookings (RoomNo, NoOfPeople) value (@RoomNo,@NoOfPeople)";  //Inserting into the Booking table 
+                dbCmd.Parameters.AddWithValue("RoomNo", txtRoomNo.Text);
+                dbCmd.Parameters.AddWithValue("NoOfPeople", txtNoGuest.Text);
+                check = dbCmd.ExecuteNonQuery();
+                MessageBox.Show("Data Added.");
+                myConn.Close();
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.Text == "Single")         //Once the user has selected the room they want the price will show up.
+            {
+                label7.Text = "£120";
+            }
+
+            else if(comboBox1.Text == "Double")
+            {
+                label7.Text = "£150";
+            }
+
+            else if (comboBox1.Text == "Family")
+            {
+                label7.Text = "£170";
+            }
+        }
+
+        private void Closebtn_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Home f = new Home();  //navigate back Home
+            f.ShowDialog();
+        }
+    }
+}
